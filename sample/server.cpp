@@ -47,11 +47,13 @@ int main()
 
     //std::cout << new_fd << std::endl;
 
-    char buf[512];
-
-    while (recv(new_fd, buf, 512, 0)) {
-        std::cout << buf << std::endl;
-    }
+    
+    char msg[] = "Hello";
+    int len, bytes_sent;
+	
+	len = strlen(msg);
+    send(new_fd, msg, len, 0);
+	std::cout << "=> Connected with the client, you are good to go..." << std::endl;
 
     freeaddrinfo(res); // free the linked-list
 }
