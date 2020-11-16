@@ -33,7 +33,7 @@ int main()
     //std::cout << "Socket: " << sockfd << "\n";
 
     // error checking for connecting to the socket
-    if (connect(sockfd, res->ai_addr, res->ai_addrlen)) < 0)
+    if (connect(sockfd, res->ai_addr, res->ai_addrlen) < 0)
 	{
 	perror("Can't connect to socket\n");
 	return(-1);
