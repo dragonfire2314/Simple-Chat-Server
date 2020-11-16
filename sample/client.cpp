@@ -4,6 +4,7 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 int main() 
 {
@@ -24,9 +25,19 @@ int main()
 
     int sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 
+    // error checking for socket creation
+    if (sockfd == -1) { 
+   	printf("socket creation failed\n"); 
+   	exit(0); 
+    }
     //std::cout << "Socket: " << sockfd << "\n";
 
-    connect(sockfd, res->ai_addr, res->ai_addrlen);
+    // error checking for connecting to the socket
+    if (connect(sockfd, res->ai_addr, res->ai_addrlen)) < 0)
+	{
+	perror("Can't connect to socket\n");
+	return(-1);
+	}
 
     char buf[512];
     while (recv(sockfd, buf, 512, 0)) {
