@@ -51,9 +51,9 @@ int main()
     char msg[] = "Hello";
     int len, bytes_sent;
 	
-	len = strlen(msg);
+    len = strlen(msg);
     send(new_fd, msg, len, 0);
-	std::cout << "=> Connected with the client, you are good to go..." << std::endl;
+    std::cout << "=> Connected with the client, you are good to go..." << std::endl;
 
     freeaddrinfo(res); // free the linked-list
 }
