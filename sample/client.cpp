@@ -28,7 +28,7 @@ int main()
 
     connect(sockfd, res->ai_addr, res->ai_addrlen);
 
-    char *msg = "Hello";
+    char msg[] = "Hello";
     int len, bytes_sent;
 
     len = strlen(msg);
