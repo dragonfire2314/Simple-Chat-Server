@@ -28,9 +28,8 @@ int main()
 
     connect(sockfd, res->ai_addr, res->ai_addrlen);
 
-	    char buf[512];
-				
-	    while (recv(sockfd, buf, 512, 0)) {
+    char buf[512];
+    while (recv(sockfd, buf, 512, 0)) {
         std::cout << buf << std::endl;
 		}
 
