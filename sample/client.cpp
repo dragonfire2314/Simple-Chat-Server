@@ -28,11 +28,11 @@ int main()
 
     connect(sockfd, res->ai_addr, res->ai_addrlen);
 
-    char msg[] = "Hello";
-    int len, bytes_sent;
-
-    len = strlen(msg);
-    bytes_sent = send(sockfd, msg, len, 0);
+	    char buf[512];
+				
+	    while (recv(sockfd, buf, 512, 0)) {
+        std::cout << buf << std::endl;
+		}
 
     freeaddrinfo(res); // free the linked-list
 }
