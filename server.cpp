@@ -22,6 +22,7 @@ bool isServerRunning = true;
 std::mutex mtx;
 std::vector<Client> socketIDs;
 
+
 void handleClient(int socketID)
 {
     //Nick name of this client
@@ -132,14 +133,16 @@ int main()
         printf("Error at listen\n");
         exit(1);
     }
-
+	
+	ofstream writeFile("writeFile.txt");
+	
     std::vector<std::thread*> threads;
     socklen_t addr_size = sizeof(their_addr);
     while (isServerRunning) {
         int new_fd = accept(s.socketID, (struct sockaddr*)&their_addr, &addr_size);
 
         Client c;
-        c.name = "Anonomous";
+        c.name = "Anonymous";
         c.socketID = new_fd;
         mtx.lock();
         socketIDs.push_back(c);
@@ -152,7 +155,8 @@ int main()
     for (int i = 0; i < threads.size(); i++) {
         threads[i]->join();
     }
-
+	
+	writeFile.close();
     freeaddrinfo(s.res); // free the linked-list
     exit(0);
 }
