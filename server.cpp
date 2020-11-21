@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <mutex>
 #include <algorithm>
+#include <fstream>
 
 #include "library.h"
 
