@@ -135,7 +135,7 @@ int main()
         exit(1);
     }
 	
-	ofstream writeFile("writeFile.txt");
+	std::ofstream writeFile("writeFile.txt");
 	
     std::vector<std::thread*> threads;
     socklen_t addr_size = sizeof(their_addr);
