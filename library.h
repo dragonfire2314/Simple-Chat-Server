@@ -13,7 +13,7 @@ struct Socket
     struct addrinfo *res;
 };
 
-bool setupSocket(std::string ip, Socket *s, bool isServer);
+void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum);
 
 void sendMessage(int socketID, std::string msg);
 std::string recvMessage(int socketID);
