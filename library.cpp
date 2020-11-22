@@ -1,6 +1,6 @@
 #include "library.h"
 
-bool setupSocket(std::string ip, Socket *s, bool isServer)
+void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
 {
     struct addrinfo hints;
 
@@ -10,15 +10,16 @@ bool setupSocket(std::string ip, Socket *s, bool isServer)
     hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
 
     int status;
-
+	
+	
     if (isServer) {
-        if ((status = getaddrinfo(NULL, "3490", &hints, &(s->res))) != 0) {
+        if ((status = getaddrinfo(NULL, portnum, &hints, &(s->res))) != 0) {
             fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
             exit(1);
         }
     }
     else {
-        if ((status = getaddrinfo(ip.c_str(), "3490", &hints, &(s->res))) != 0) {
+        if ((status = getaddrinfo(ip.c_str(), portnum, &hints, &(s->res))) != 0) {
             fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
             exit(1);
         }
