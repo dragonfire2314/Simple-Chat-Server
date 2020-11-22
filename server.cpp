@@ -22,7 +22,7 @@ struct Client {
 bool isServerRunning = true;
 std::mutex mtx;
 std::vector<Client> socketIDs;
-
+std::ofstream writeFile("writeFile.txt");
 
 void handleClient(int socketID)
 {
@@ -97,7 +97,7 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		writeFile << "test";
+		writeFile << nickName + ": " + msg + "\n";
 		mtx.unlock();
     }
     while(1) {}
@@ -138,7 +138,7 @@ int main()
         exit(1);
     }
 	
-	std::ofstream writeFile("writeFile.txt");
+	
 	
     std::vector<std::thread*> threads;
     socklen_t addr_size = sizeof(their_addr);
