@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "library.h"
+#define DEFAULT_PORT "3490"
 
 struct Client {
     int socketID;
@@ -31,7 +32,6 @@ void handleClient(int socketID)
 
     std::string HELLOmsg = "HELLO";
     sendMessage(socketID, HELLOmsg);
-
     std::string NICKmsg = "Please select a nickname (NICK <yourName>)";
     while (1) {
         //Nick name selection
@@ -97,7 +97,7 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		writeFile << nickName + ": " + msg + "\n";
+		//writeFile << "test";
 		mtx.unlock();
     }
     while(1) {}
@@ -112,7 +112,7 @@ void closeServer(int s)
     exit(1); 
 }
 
-int main() 
+int main(int argc, char* argv[]) 
 {
     struct sigaction sigIntHandler;
 
@@ -125,8 +125,22 @@ int main()
     struct sockaddr_storage their_addr;
 
     Socket s;
+	
+	char* portnumber;
+	std::string def_port = DEFAULT_PORT; 
+	
+	if (argc == 2){
+	portnumber = argv[1];	
+	}
+	else if (argc > 2){
+	printf("\nusage: %s <portnumber>\n\n", argv[0]);
+	exit(1);
+	}
+	else if (argc <2){
+	portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
+	}
 
-    setupSocket("NULL", &s, true);
+    setupSocket("NULL", &s, true, portnumber);
 
     if (bind(s.socketID, s.res->ai_addr, s.res->ai_addrlen) == -1) {
         printf("Error at bind\n");
@@ -137,7 +151,6 @@ int main()
         printf("Error at listen\n");
         exit(1);
     }
-	
 	
 	
     std::vector<std::thread*> threads;
