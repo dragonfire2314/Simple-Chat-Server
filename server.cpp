@@ -30,7 +30,7 @@ void handleClient(int socketID)
     //Nick name of this client
     std::string nickName;
 
-    std::string HELLOmsg = "HELLO";
+    std::string HELLOmsg = "\nHELLO, you are connected to Glue Chat\n\n";
     sendMessage(socketID, HELLOmsg);
     std::string NICKmsg = "Please select a nickname (NICK <yourName>)";
     while (1) {
@@ -97,7 +97,7 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		writeFile << "test";
+		writeFile << "test"; 
 		mtx.unlock();
     }
     while(1) {}
