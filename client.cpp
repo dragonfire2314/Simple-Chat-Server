@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <thread>
 #include <mutex>
+#define DEFAULT_PORT "3490"
 
 #include "library.h"
 
@@ -54,9 +55,22 @@ int main(int argc, char* argv[])
     sigIntHandler.sa_flags = 0;
 
     sigaction(SIGINT, &sigIntHandler, NULL);
+	
+	char* portnumber;
+	std::string def_port = DEFAULT_PORT;
+	
+	if (argc == 2){
+	portnumber = argv[1];	
+	}
+	else if (argc > 2){
+	printf("\nusage: %s <portnumber>\n\n", argv[0]);
+	exit(1);
+	}
+	else if (argc <2){
+	portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
+	}
 
-
-    setupSocket("127.0.0.1", &s, false);
+    setupSocket("127.0.0.1", &s, false, portnumber);
 
     connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen);
 
