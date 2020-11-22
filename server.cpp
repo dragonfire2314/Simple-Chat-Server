@@ -97,7 +97,7 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		//writeFile << "test";
+		writeFile << "test";
 		mtx.unlock();
     }
     while(1) {}
