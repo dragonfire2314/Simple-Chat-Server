@@ -1,3 +1,18 @@
+//////////////////////////////////////////////////
+//
+// Names: Tanner Kern, Matt Masak, Andrew Zammetti
+// Creation Date: November 15, 2020
+// Due Date: November 24, 2020
+// Course: CSC328 - Network Programming
+// Professor Name: Dr. Frye
+// Assignment: Simple Chat Server
+// Filename: client.cpp
+// Purpose: This is run on each client's machine
+//          It's a basic client program that handles sending
+//          messages, and connecting to the server
+//  
+///////////////////////////////////////////////////
+
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -59,6 +74,7 @@ int main(int argc, char* argv[])
 	char* portnumber;
 	std::string def_port = DEFAULT_PORT;
 	
+	//accept port number as CLA
 	if (argc == 2){
 	portnumber = argv[1];	
 	}
@@ -72,10 +88,11 @@ int main(int argc, char* argv[])
 
     setupSocket("127.0.0.1", &s, false, portnumber);
 
-    connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen);
+    connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen); //connect to server
 
     std::thread incoming(handleMessages);
 
+	//infinite loop, always ready to accept message
     while (1) {
         std::string msg;
         getline(std::cin, msg);
