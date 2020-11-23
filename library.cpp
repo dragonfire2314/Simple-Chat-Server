@@ -1,3 +1,17 @@
+//////////////////////////////////////////////////
+//
+// Names: Tanner Kern
+// Creation Date: November 15, 2020
+// Due Date: November 24, 2020
+// Course: CSC328 - Network Programming
+// Professor Name: Dr. Frye
+// Assignment: Simple Chat Server
+// Filename: library.cpp
+// Purpose: The library file containing all 
+//          the functions used by both the client
+//          and the server. 
+//  
+///////////////////////////////////////////////////
 #include "library.h"
 
 void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
