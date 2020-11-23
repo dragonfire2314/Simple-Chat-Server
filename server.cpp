@@ -129,6 +129,9 @@ int main(int argc, char* argv[])
 	char* portnumber;
 	std::string def_port = DEFAULT_PORT; 
 	
+	//if 2 arguments set argument 2 to the port number
+	//if 1 argument, use default port number
+	//if too many arguments, print usage statement and quit
 	if (argc == 2){
 	portnumber = argv[1];	
 	}
