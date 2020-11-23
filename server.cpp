@@ -1,3 +1,19 @@
+//////////////////////////////////////////////////
+//
+// Names: Tanner Kern, Matt Masak, Andrew Zammetti
+// Creation Date: November 15, 2020
+// Due Date: November 24, 2020
+// Course: CSC328 - Network Programming
+// Professor Name: Dr. Frye
+// Assignment: Simple Chat Server
+// Filename: server.cpp
+// Purpose: Handle all of the server operations
+//          in a simple chat example. Including
+//          keeping track of clients, sending messages,
+//          and gracefully shutting down. 
+//  
+///////////////////////////////////////////////////
+
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -11,6 +27,7 @@
 #include <mutex>
 #include <algorithm>
 #include <fstream>
+#include <ctime>
 
 #include "library.h"
 #define DEFAULT_PORT "3490"
@@ -24,6 +41,14 @@ bool isServerRunning = true;
 std::mutex mtx;
 std::vector<Client> socketIDs;
 std::ofstream writeFile("writeFile.txt");
+
+char* getTime(){
+	time_t now = time(0); //local time
+	tm *gmtm = gmtime(&now); 
+	char* dt = asctime(gmtm); //convert to UTC
+	
+	return dt;
+}
 
 void handleClient(int socketID)
 {
@@ -97,7 +122,8 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		writeFile << "test"; 
+		char* time = getTime();
+		writeFile << time << ": " + nickName + ": " + msg << "\n"; 
 		mtx.unlock();
     }
     while(1) {}
