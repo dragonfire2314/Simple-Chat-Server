@@ -155,15 +155,18 @@ int main(int argc, char* argv[])
 	char* portnumber;
 	std::string def_port = DEFAULT_PORT; 
 	
+	//if 2 arguments set argument 2 to the port number
+	//if 1 argument, use default port number
+	//if too many arguments, print usage statement and quit
 	if (argc == 2){
-	portnumber = argv[1];	
+		portnumber = argv[1];	
 	}
 	else if (argc > 2){
-	printf("\nusage: %s <portnumber>\n\n", argv[0]);
-	exit(1);
+		printf("\nusage: %s <portnumber>\n\n", argv[0]);
+		exit(1);
 	}
-	else if (argc <2){
-	portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
+	else if (argc < 2){
+		portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
 	}
 
     setupSocket("NULL", &s, true, portnumber);

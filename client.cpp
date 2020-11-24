@@ -74,21 +74,35 @@ int main(int argc, char* argv[])
 	char* portnumber;
 	std::string def_port = DEFAULT_PORT;
 	
+
 	//accept port number as CLA
+
+	//if 2 arguments set argument 2 to the port number
+	//if 1 argument, use default port number
+	//if too many arguments, print usage statement and quit
+
 	if (argc == 2){
-	portnumber = argv[1];	
+		portnumber = argv[1];	
 	}
 	else if (argc > 2){
-	printf("\nusage: %s <portnumber>\n\n", argv[0]);
-	exit(1);
+		printf("\nusage: %s <portnumber>\n\n", argv[0]);
+		exit(1);
 	}
 	else if (argc <2){
-	portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
+		portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
 	}
 
     setupSocket("127.0.0.1", &s, false, portnumber);
 
+
     connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen); //connect to server
+
+	//added error checking for connect
+    if (connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen) < 0){
+		perror("Error at connect:");
+		exit(1);
+	}
+		
 
     std::thread incoming(handleMessages);
 

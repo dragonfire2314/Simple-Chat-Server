@@ -39,8 +39,11 @@ void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
         }
     }
 
-    //Add error checking
-    s->socketID = socket(s->res->ai_family, s->res->ai_socktype, s->res->ai_protocol);
+    
+    if (s->socketID = socket(s->res->ai_family, s->res->ai_socktype, s->res->ai_protocol) < 0){
+		perror("Unable to create socket");
+		exit(1);
+	}
 }
 
 void sendMessage(int socketID, std::string msg)
