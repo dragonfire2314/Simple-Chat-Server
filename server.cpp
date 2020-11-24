@@ -1,3 +1,18 @@
+//////////////////////////////////////////////////
+//
+// Names: Tanner Kern, Matt Masak, Andrew Zammetti
+// Creation Date: November 15, 2020
+// Due Date: November 24, 2020
+// Course: CSC328 - Network Programming
+// Professor Name: Dr. Frye
+// Assignment: Simple Chat Server
+// Filename: server.cpp
+// Purpose: Handle all of the server operations
+//          in a simple chat example. Including
+//          keeping track of clients, sending messages,
+//          and gracefully shutting down. 
+//  
+///////////////////////////////////////////////////
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -12,6 +27,7 @@
 #include <algorithm>
 #include <fstream>
 #include <chrono>
+#include <ctime>
 
 #include "library.h"
 #define DEFAULT_PORT "3490"
@@ -26,6 +42,32 @@ std::mutex mtx;
 std::vector<Client> socketIDs;
 std::ofstream writeFile("writeFile.txt");
 
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    getTime
+//  Description:      Returns the current time in UTC
+//  Parameters:       None
+//  Return Value:     char* dt - the Time in UTC, as a character array
+//
+///////////////////////////////////////////////////////////
+char* getTime(){
+	time_t now = time(0); //local time
+	tm *gmtm = gmtime(&now); 
+	char* dt = asctime(gmtm); //convert to UTC
+	
+	return dt;
+}
+
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    handleClient
+//  Description:      A huge function that will accept new messages,
+//                    send them to other users with helper functions,
+//                    and writes to a log file.
+//  Parameters:       int socketID - which socket ID is the client being handled
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
 void handleClient(int socketID)
 {
     //Nick name of this client
@@ -101,12 +143,22 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		writeFile << "test"; 
+		char* time = getTime();
+		writeFile << time << ": " + nickName + ": " + msg << "\n"; 
 		mtx.unlock();
     }
     while(1) {}
 }
 
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    closeServer
+//  Description:      Closes the server after receiving a BYE command, or other 
+//                    server closing commands.
+//  Parameters:       int s - the socket sending the close request
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
 void closeServer(int s)
 {
     isServerRunning = false;
