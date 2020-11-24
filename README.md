@@ -18,6 +18,8 @@ Better than flour.
 //  
 ///////////////////////////////////////////////////
 
+HOW TO RUN: Simply type "make," and you're good to go!
+
 FOLDER MANIFEST:
 
 client.cpp - Client side program, handles everything strictly client side
