@@ -53,9 +53,7 @@ If the message is "BYE" then the client will disconnect.
 
 ASSUMPTIONS
 
-It is assumed that the server is running before a client operation is started. Otherwise, nothing will happen,
-and the screen will display nothing. It is also assumed that there will not be multiple
-client operations running on one machine. 
+It is assumed that the server will be run before a client operation is started. Otherwise, you will get an error stating: Error at connect:: Connection refused.
 
 
 DEVELOPMENT PROCESS
