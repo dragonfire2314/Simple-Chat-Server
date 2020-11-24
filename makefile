@@ -1,3 +1,5 @@
+main: client server
+
 client:
 	g++ -c library.cpp
 	ar rvs library.a library.o
