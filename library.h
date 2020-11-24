@@ -21,6 +21,10 @@
 #include <string.h>
 #include <vector>
 
+//
+// ALL FUNCTION DOCUMENTATION IS IN LIBRARY.CPP
+// 
+
 struct Socket 
 {
     int socketID;
