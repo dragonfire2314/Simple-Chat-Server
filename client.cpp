@@ -12,7 +12,6 @@
 //          messages, and connecting to the server
 //  
 ///////////////////////////////////////////////////
-
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -32,7 +31,6 @@ std::mutex mtx;
 Socket s;
 
 
-
 ///////////////////////////////////////////////////////////
 //  
 //  Function name:    closeConnection
@@ -42,7 +40,6 @@ Socket s;
 //  Return Value:     None
 //
 ///////////////////////////////////////////////////////////
-
 void closeConnection(int signal)
 {
     printf("Caught signal %d\n", signal);
@@ -57,7 +54,6 @@ void closeConnection(int signal)
     //Temp, need to do proper clean up of stuff
     exit(1); 
 }
-
 
 ///////////////////////////////////////////////////////////
 //  
@@ -96,13 +92,9 @@ int main(int argc, char* argv[])
 	char* portnumber;
 	std::string def_port = DEFAULT_PORT;
 	
-
-	//accept port number as CLA
-
 	//if 2 arguments set argument 2 to the port number
 	//if 1 argument, use default port number
 	//if too many arguments, print usage statement and quit
-
 	if (argc == 2){
 		portnumber = argv[1];	
 	}
@@ -116,19 +108,14 @@ int main(int argc, char* argv[])
 
     setupSocket("127.0.0.1", &s, false, portnumber);
 
-
-    connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen); //connect to server
-
 	//added error checking for connect
     if (connect(s.socketID, s.res->ai_addr, s.res->ai_addrlen) < 0){
 		perror("Error at connect:");
 		exit(1);
 	}
 		
-
     std::thread incoming(handleMessages);
 
-	//infinite loop, always ready to accept message
     while (1) {
         std::string msg;
         getline(std::cin, msg);
