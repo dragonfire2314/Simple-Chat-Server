@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////
 //
-// Names: Tanner Kern
+// Names: Tanner Kern, Matt Masak, Andrew Zammetti
 // Creation Date: November 15, 2020
 // Due Date: November 24, 2020
 // Course: CSC328 - Network Programming
@@ -14,7 +14,6 @@
 ///////////////////////////////////////////////////
 #include "library.h"
 
-
 ///////////////////////////////////////////////////////////
 //  
 //  Function name:    setupSocket
@@ -24,11 +23,11 @@
 //                                trying to create a socket
 //                    Socket *s - The socket about to be created
 //                    bool isServer - False if not the server
-//                    char* portnum - The port number gotten from CLA
+//                    string portnum - The port number gotten from CLA
 //  Return Value:     None
 //
 ///////////////////////////////////////////////////////////
-void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
+void setupSocket(std::string ip, Socket *s, bool isServer, std::string portnum)
 {
     struct addrinfo hints;
 
@@ -38,16 +37,15 @@ void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
     hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
 
     int status;
-	
-	
+
     if (isServer) {
-        if ((status = getaddrinfo(NULL, portnum, &hints, &(s->res))) != 0) {
+        if ((status = getaddrinfo(NULL, portnum.c_str(), &hints, &(s->res))) != 0) {
             fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
             exit(1);
         }
     }
     else {
-        if ((status = getaddrinfo(ip.c_str(), portnum, &hints, &(s->res))) != 0) {
+        if ((status = getaddrinfo(ip.c_str(), portnum.c_str(), &hints, &(s->res))) != 0) {
             fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
             exit(1);
         }
@@ -94,7 +92,7 @@ std::string recvMessage(int socketID)
 
     int status;
     if (recv(socketID, buf, 512, 0) == 0) {
-        fprintf(stderr, "client gone, revc error: %s\n", gai_strerror(status));
+        //fprintf(stderr, "client gone, revc error: %s\n", gai_strerror(status));
         exit(1);
     }
 
