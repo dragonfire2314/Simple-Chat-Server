@@ -1,19 +1,3 @@
-//////////////////////////////////////////////////
-//
-// Names: Tanner Kern, Matt Masak, Andrew Zammetti
-// Creation Date: November 15, 2020
-// Due Date: November 24, 2020
-// Course: CSC328 - Network Programming
-// Professor Name: Dr. Frye
-// Assignment: Simple Chat Server
-// Filename: server.cpp
-// Purpose: Handle all of the server operations
-//          in a simple chat example. Including
-//          keeping track of clients, sending messages,
-//          and gracefully shutting down. 
-//  
-///////////////////////////////////////////////////
-
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -27,7 +11,7 @@
 #include <mutex>
 #include <algorithm>
 #include <fstream>
-#include <ctime>
+#include <chrono>
 
 #include "library.h"
 #define DEFAULT_PORT "3490"
@@ -41,14 +25,6 @@ bool isServerRunning = true;
 std::mutex mtx;
 std::vector<Client> socketIDs;
 std::ofstream writeFile("writeFile.txt");
-
-char* getTime(){
-	time_t now = time(0); //local time
-	tm *gmtm = gmtime(&now); 
-	char* dt = asctime(gmtm); //convert to UTC
-	
-	return dt;
-}
 
 void handleClient(int socketID)
 {
@@ -100,11 +76,14 @@ void handleClient(int socketID)
     while (1) {
         msg = recvMessage(socketID);
         if (msg == "BYE") {
+            //Print the BYE
             //Remove the client
             mtx.lock();
             for (int i = 0; i < socketIDs.size(); i++) {
-                if (socketIDs[i].socketID != socketID) {
+                if (socketIDs[i].socketID == socketID) {
+                    std::cout << socketIDs[i].name << " has left: BYE" << std::endl;   
                     socketIDs.erase(socketIDs.begin() + i);
+                    break;
                 }
             }
             mtx.unlock();
@@ -122,8 +101,7 @@ void handleClient(int socketID)
         }
         mtx.unlock();
 		mtx.lock();
-		char* time = getTime();
-		writeFile << time << ": " + nickName + ": " + msg << "\n"; 
+		writeFile << "test"; 
 		mtx.unlock();
     }
     while(1) {}
@@ -131,8 +109,22 @@ void handleClient(int socketID)
 
 void closeServer(int s)
 {
-    printf("Caught signal %d\n",s);
     isServerRunning = false;
+
+    mtx.lock();
+    std::string msg = "Server will be closing in 10 seconds!";
+    for (int i = 0; i < socketIDs.size(); i++) {
+        sendMessage(socketIDs[i].socketID, msg);
+    }
+    mtx.unlock();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+
+    mtx.lock();
+    for (int i = 0; i < socketIDs.size(); i++) {
+        close(socketIDs[i].socketID);
+    }
+    mtx.unlock();
 
     //Temp, need to do proper clean up of stuff
     exit(1); 
@@ -152,7 +144,7 @@ int main(int argc, char* argv[])
 
     Socket s;
 	
-	char* portnumber;
+	std::string portnumber;
 	std::string def_port = DEFAULT_PORT; 
 	
 	//if 2 arguments set argument 2 to the port number
@@ -166,7 +158,7 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 	else if (argc < 2){
-		portnumber = strcpy(new char[def_port.length() + 1], def_port.c_str());
+		portnumber = def_port;//strcpy(new char[def_port.length() + 1], def_port.c_str());
 	}
 
     setupSocket("NULL", &s, true, portnumber);
