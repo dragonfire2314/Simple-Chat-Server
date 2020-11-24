@@ -1,7 +1,9 @@
 client:
-	g++ -std=c++11 client.cpp library.cpp -pthread -o client.out
-	./client.out
+	g++ -c library.cpp
+	ar rvs library.a library.o
+	g++ -std=c++11 client.cpp library.a -pthread -o client.out
 
 server:
-	g++ -std=c++11 server.cpp library.cpp -pthread -o server.out
-	./server.out
+	g++ -c library.cpp
+	ar rvs library.a library.o
+	g++ -std=c++11 server.cpp library.a -pthread -o server.out
