@@ -31,6 +31,18 @@ std::mutex mtx;
 
 Socket s;
 
+
+
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    closeConnection
+//  Description:      Disconnects from the server, displays signal
+//                    message and frees the linked list.
+//  Parameters:       int signal - The signal that is caught and displayed
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
+
 void closeConnection(int signal)
 {
     printf("Caught signal %d\n", signal);
@@ -46,6 +58,16 @@ void closeConnection(int signal)
     exit(1); 
 }
 
+
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    handleMessages
+//  Description:      An infinite loop, ready to catch any message 
+//                    sent by other users
+//  Parameters:       None
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
 void handleMessages()
 {
     std::string msg;
