@@ -14,6 +14,20 @@
 ///////////////////////////////////////////////////
 #include "library.h"
 
+
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    setupSocket
+//  Description:      This function sets up a socket with 
+//                    all the given information
+//  Parameters:       string ip - The IP address of whoever is 
+//                                trying to create a socket
+//                    Socket *s - The socket about to be created
+//                    bool isServer - False if not the server
+//                    char* portnum - The port number gotten from CLA
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
 void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
 {
     struct addrinfo hints;
@@ -46,6 +60,15 @@ void setupSocket(std::string ip, Socket *s, bool isServer, char* portnum)
 	}
 }
 
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    sendMessage
+//  Description:      Sends a given message, whether it's from the server or client
+//  Parameters:       int socketID - Which socket this is being sent to
+//                    string msg - The message to be sent
+//  Return Value:     None
+//
+///////////////////////////////////////////////////////////
 void sendMessage(int socketID, std::string msg)
 {
     int len, bytes_sent;
@@ -54,6 +77,14 @@ void sendMessage(int socketID, std::string msg)
     bytes_sent = send(socketID, msg.c_str(), len, 0);
 }
 
+///////////////////////////////////////////////////////////
+//  
+//  Function name:    recvMessage
+//  Description:      Handles receiving functions from both client and server
+//  Parameters:       int socketID - which socket ID is sending this message
+//  Return Value:     s (string) - the message that's being received
+//
+///////////////////////////////////////////////////////////
 std::string recvMessage(int socketID)
 {
     char buf[512];
