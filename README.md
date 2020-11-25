@@ -18,7 +18,13 @@ Better than flour.
 //  
 ///////////////////////////////////////////////////
 
-HOW TO RUN: Simply type "make," and you're good to go!
+HOW TO RUN: Simply type "make," and the make file will compile for you!
+After that, have two separate applications, one for the server, and another
+for the client.
+Run the server by typing ./server.out
+and then
+Run the client by typing ./client.out
+
 
 FOLDER MANIFEST:
 
